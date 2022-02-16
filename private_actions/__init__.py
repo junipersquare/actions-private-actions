@@ -82,9 +82,9 @@ def checkout_repo(repo: Repo, path: str, token: str):
 def main():
     try:
         config = parse_arguments()
+
+        for repo in config.repos:
+            checkout_repo(repo, config.checkout_path, config.token)
     except Exception as exc:
         print(f"::error::{exc}")
         sys.exit(1)
-
-    for repo in config.repos:
-        checkout_repo(repo, config.checkout_path, config.token)
