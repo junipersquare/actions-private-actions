@@ -1,0 +1,20 @@
+name: 'Checkout Private Actions'
+description: 'Download and setup private actions'
+inputs:
+  repo-list:
+    description: "List of repos containing private actions to checkout"
+    required: true
+  checkout-to:
+    description: "Where to checkout the private actions to"
+    required: true
+    default: ./.github/actions
+  token:
+    description: "The github token to use"
+    required: true
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.repo-list }}
+    - ${{ inputs.checkout-to }}
+    - ${{ inputs.token }}
