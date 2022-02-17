@@ -8,11 +8,12 @@ import sys
 import typing
 
 
-REQUIRED_ORGANIZATION = "junipersquare"
+# REQUIRED_ORGANIZATION = "junipersquare"
 
 
 @dataclasses.dataclass
 class Repo:
+    owner: str
     name: str
     ref: str
 
@@ -52,16 +53,17 @@ def parse_repo(repo_name: str) -> Repo:
 
     organization = match.group("org")
 
-    if organization != REQUIRED_ORGANIZATION:
-        raise Exception(
-            f"Invalid organization for '{repo_name}': Only actions from the {REQUIRED_ORGANIZATION} org are allowed."
-        )
+    if False:
+        if organization != REQUIRED_ORGANIZATION:
+            raise Exception(
+                f"Invalid organization for '{repo_name}': Only actions from the {REQUIRED_ORGANIZATION} org are allowed."
+            )
 
-    return Repo(match.group("repo"), match.group("ref"))
+    return Repo(match.group("org"), match.group("repo"), match.group("ref"))
 
 
 def checkout_repo(repo: Repo, path: str, token: str):
-    clone_url = f"https://{token}@github.com/{REQUIRED_ORGANIZATION}/{repo.name}.git"
+    clone_url = f"https://{token}@github.com/{repo.owner}/{repo.name}.git"
     clone_dir = os.path.join(path, repo.name)
     subprocess.check_call(
         [
