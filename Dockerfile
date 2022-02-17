@@ -23,5 +23,4 @@ RUN poetry build && \
 FROM base as final
 RUN apk add --no-cache libffi git
 COPY --from=builder /venv /venv
-COPY ./entrypoint.sh /usr/local/bin
 ENTRYPOINT ["/venv/bin/private_actions"]
