@@ -4,6 +4,7 @@ import * as exec from "@actions/exec";
 async function run(): Promise<void> {
   try {
     const token = core.getInput("token");
+    // Actions don't have a great way to input a list.  Use json strings to get around that.
     const repoList: string[] = JSON.parse(core.getInput("repo-list"));
     const regex = /^(.+)\/(.+)@(.+)$/;
 
@@ -18,6 +19,7 @@ async function run(): Promise<void> {
       const name = match[2];
       const ref = match[3];
 
+      // Clone the action into the directory to make the workflow think that it is part of the current repo.
       const cloneUrl = `https://${token}@github.com/${owner}/${name}.git`;
       const cloneDir = `./.github/actions/${name}`;
       const args = [
